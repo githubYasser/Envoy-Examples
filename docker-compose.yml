@@ -47,6 +47,32 @@ services:
       - SERVICE_NAME=2
     expose:
       - "80"
+      
+  #authentication:
+    #build:
+      #context: .
+      #dockerfile: Dockerfile-auth-envoy
+    #volumes:
+      #- ./auth-envoy.yaml:/etc/auth-envoy.yaml
+    #networks:
+      #envoymesh:
+        #aliases:
+          #- authentication
+    #environment:
+      #- SERVICE_NAME=authentication
+    #expose:
+      #- "80"
+      
+  springboot:
+    build:
+      context: .
+      dockerfile: Dockerfile-auth
+    networks:
+      - envoymesh
+    expose:
+      - "8090"
+    ports:
+      - "8090:8090"
 
 networks:
   envoymesh: {}

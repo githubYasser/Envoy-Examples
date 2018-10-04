@@ -31,7 +31,7 @@ static_resources:
                   https_redirect: true
           http_filters:
           - name: envoy.router
-            config: {}
+            config: {} 
   - address:
       socket_address:
         address: 0.0.0.0
@@ -57,7 +57,22 @@ static_resources:
                   prefix: "/service/2"
                 route:
                   cluster: service2
+          forward_client_cert_details: APPEND_FORWARD
+          set_current_client_cert_details:
+            subject: true
+            cert: true
+            dns: true
+            uri: true
           http_filters:
+          - name: envoy.ext_authz
+            config:
+              http_service:
+                server_uri:
+                  uri: "blalbla"
+                  cluster: ext-authz
+                  timeout: 10s
+                path_prefix: "/auth/cert"
+                allowed_request_headers: ["x-forwarded-client-cert"]
           - name: envoy.router
             config: {}
       tls_context:
@@ -69,6 +84,14 @@ static_resources:
             trusted_ca: { "filename": "/usr/local/ca-chain.cert.pem" }
         require_client_certificate: true
   clusters:
+  - name: ext-authz
+    connect_timeout: 15.0s
+    type: strict_dns
+    lb_policy: round_robin
+    hosts:
+      - socket_address:
+          address: springboot
+          port_value: 8090
   - name: service1
     connect_timeout: 0.25s
     type: strict_dns
@@ -94,13 +117,13 @@ static_resources:
     - socket_address:
         address: service2
         port_value: 80
-    #tls_context:
-      #common_tls_context:
-        #tls_certificates:
-          #certificate_chain: { "filename": "/usr/local/client.cert.pem" }
-          #private_key: { "filename": "/usr/local/client.key.pem" } 
-        #validation_context:
-           #trusted_ca: { "filename": "/usr/local/ca-chain.cert.pem" }  
+    tls_context:
+      common_tls_context:
+        tls_certificates:
+          certificate_chain: { "filename": "/usr/local/client.cert.pem" }
+          private_key: { "filename": "/usr/local/client.key.pem" } 
+        validation_context:
+           trusted_ca: { "filename": "/usr/local/ca-chain.cert.pem" }  
 admin:
   access_log_path: "/dev/null"
   address:
