@@ -1,4 +1,4 @@
-FROM envoyproxy/envoy:latest
+FROM envoyproxy/envoy:fdfa5bde3343372ad662a830da0bdc3aea806f4d
 
 RUN apt-get update && apt-get -q install -y curl
 ADD ./3_application/private/localhost.key.pem /usr/local/front.server.key.pem
@@ -6,4 +6,7 @@ ADD ./3_application/certs/localhost.cert.pem /usr/local/front.server.cert.pem
 ADD ./2_intermediate/certs/ca-chain.cert.pem /usr/local/ca-chain.cert.pem
 ADD ./4_client/private/localhost.key.pem /usr/local/client.key.pem
 ADD ./4_client/certs/localhost.cert.pem /usr/local/client.cert.pem
-CMD /usr/local/bin/envoy -c /etc/front-envoy.yaml --service-cluster front-proxy
+ADD ./jwks.json /usr/local/jwks.json
+COPY front-envoy.yaml /etc/front-envoy.yaml
+RUN chmod -R 777 /etc/front-envoy.yaml
+CMD /usr/local/bin/envoy -c /etc/front-envoy.yaml -l debug

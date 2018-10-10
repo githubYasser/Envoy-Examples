@@ -1,2 +1,2 @@
-- This is the same sandbox Example from (https://www.envoyproxy.io/docs/envoy/latest/start/sandboxes/front_proxy.html) BUT with mtls Envoy feautres.
-- A certificate validation is also done by forwarding the client certificate to a backend system (spring-boot application).
+To learn about this sandbox and for instructions on how to run it please head over
+to the [envoy docs](https://www.envoyproxy.io/docs/envoy/latest/start/sandboxes/front_proxy.html)

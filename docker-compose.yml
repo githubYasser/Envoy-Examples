@@ -1,12 +1,17 @@
-version: '2'
+version: '3.7'
 services:
 
   front-envoy:
+    # volumes:
+      # - type: volume
+        # source: bla
+        # target: /etc/
+        # volume:
+          # nocopy: false
     build:
       context: .
       dockerfile: Dockerfile-frontenvoy
-    volumes:
-      - ./front-envoy.yaml:/etc/front-envoy.yaml
+    
     networks:
       - envoymesh
     expose:
@@ -22,8 +27,12 @@ services:
     build:
       context: .
       dockerfile: Dockerfile-service
-    volumes:
-      - ./service-envoy.yaml:/etc/service-envoy.yaml
+    # volumes:
+      # - type: volume
+        # source: config
+        # target: /etc/
+        # volume:
+          # nocopy: false
     networks:
       envoymesh:
         aliases:
@@ -37,8 +46,12 @@ services:
     build:
       context: .
       dockerfile: Dockerfile-service
-    volumes:
-      - ./service-envoy.yaml:/etc/service-envoy.yaml
+    # volumes:
+      # - type: volume
+        # source: config
+        # target: /etc/
+        # volume:
+          # nocopy: false
     networks:
       envoymesh:
         aliases:
@@ -47,22 +60,7 @@ services:
       - SERVICE_NAME=2
     expose:
       - "80"
-      
-  #authentication:
-    #build:
-      #context: .
-      #dockerfile: Dockerfile-auth-envoy
-    #volumes:
-      #- ./auth-envoy.yaml:/etc/auth-envoy.yaml
-    #networks:
-      #envoymesh:
-        #aliases:
-          #- authentication
-    #environment:
-      #- SERVICE_NAME=authentication
-    #expose:
-      #- "80"
-      
+  
   springboot:
     build:
       context: .
@@ -76,3 +74,6 @@ services:
 
 networks:
   envoymesh: {}
+
+#volumes:
+#  bla:
