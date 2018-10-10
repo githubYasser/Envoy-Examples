@@ -1,2 +1,12 @@
-To learn about this sandbox and for instructions on how to run it please head over
-to the [envoy docs](https://www.envoyproxy.io/docs/envoy/latest/start/sandboxes/front_proxy.html)
+** Features
+This is the same example from (https://www.envoyproxy.io/docs/envoy/latest/start/sandboxes/front_proxy.html) but with following features:
+
+* mtls encryption between services and certificate validation. The validation is done with an external springboot application.
+* JWT validation
+
+
+** Test the application
+* Download docker and docker-compose
+* Run:
+  - docker-compose build
+  - docker-compose up
