@@ -2,12 +2,8 @@ version: '3.7'
 services:
 
   front-envoy:
-    # volumes:
-      # - type: volume
-        # source: bla
-        # target: /etc/
-        # volume:
-          # nocopy: false
+    volumes:
+      - ./front-envoy.yaml:/etc/front-envoy.yaml
     build:
       context: .
       dockerfile: Dockerfile-frontenvoy
@@ -27,12 +23,8 @@ services:
     build:
       context: .
       dockerfile: Dockerfile-service
-    # volumes:
-      # - type: volume
-        # source: config
-        # target: /etc/
-        # volume:
-          # nocopy: false
+    volumes:
+      - ./service-envoy.yaml:/etc/service-envoy.yaml
     networks:
       envoymesh:
         aliases:
@@ -46,12 +38,8 @@ services:
     build:
       context: .
       dockerfile: Dockerfile-service
-    # volumes:
-      # - type: volume
-        # source: config
-        # target: /etc/
-        # volume:
-          # nocopy: false
+    volumes:
+      - ./service-envoy.yaml:/etc/service-envoy.yaml
     networks:
       envoymesh:
         aliases:
@@ -74,6 +62,3 @@ services:
 
 networks:
   envoymesh: {}
-
-#volumes:
-#  bla:

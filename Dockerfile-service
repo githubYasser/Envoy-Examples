@@ -9,7 +9,5 @@ ADD ./start_service.sh /usr/local/bin/start_service.sh
 ADD ./3_application/private/localhost.key.pem /usr/local/service.key.pem
 ADD ./3_application/certs/localhost.cert.pem /usr/local/service.cert.pem
 ADD ./2_intermediate/certs/ca-chain.cert.pem /usr/local/service-chain.cert.pem
-COPY service-envoy.yaml /etc/service-envoy.yaml
-RUN chmod -R 777 /etc/service-envoy.yaml
 RUN chmod u+x /usr/local/bin/start_service.sh
 ENTRYPOINT /usr/local/bin/start_service.sh
